@@ -12,6 +12,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
 /**
@@ -115,7 +116,7 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
             }
         });
 
-        panelFondo.setBackground(new java.awt.Color(60, 179, 113));
+        panelFondo.setBackground(new java.awt.Color(102, 153, 255));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancologosaludtapdos.png"))); // NOI18N
 
@@ -142,7 +143,7 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel5.setText("*curp");
+        jLabel5.setText("*CURP");
         jLabel5.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
@@ -179,10 +180,8 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
             }
         });
 
-        txtCurp.setText("PAPA0108920001CH");
         txtCurp.setFont(new java.awt.Font("Tw Cen MT", 0, 20)); // NOI18N
 
-        txtEdad.setText("20");
         txtEdad.setFont(new java.awt.Font("Tw Cen MT", 0, 20)); // NOI18N
         txtEdad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -190,7 +189,6 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
             }
         });
 
-        TxtNombre.setText("Alejandro");
         TxtNombre.setFont(new java.awt.Font("Tw Cen MT", 0, 20)); // NOI18N
         TxtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -198,10 +196,8 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
             }
         });
 
-        txtApellidoPaterno.setText("Paez");
         txtApellidoPaterno.setFont(new java.awt.Font("Tw Cen MT", 0, 20)); // NOI18N
 
-        txtApellidoMaterno.setText("Perez");
         txtApellidoMaterno.setFont(new java.awt.Font("Tw Cen MT", 0, 20)); // NOI18N
         txtApellidoMaterno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -209,7 +205,6 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
             }
         });
 
-        txtUsuario.setText("Alexosas");
         txtUsuario.setFont(new java.awt.Font("Tw Cen MT", 0, 20)); // NOI18N
         txtUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -217,7 +212,6 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
             }
         });
 
-        txtPassword.setText("jPasswordFieldRound2");
         txtPassword.setFont(new java.awt.Font("Tw Cen MT", 0, 20)); // NOI18N
 
         javax.swing.GroupLayout pnlDatosLayout = new javax.swing.GroupLayout(pnlDatos);
@@ -236,7 +230,7 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
                             .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                             .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
                         .addGap(74, 74, 74)
-                        .addComponent(myButton, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
+                        .addComponent(myButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlDatosLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(pnlDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -246,7 +240,7 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
                         .addGroup(pnlDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlDatosLayout.createSequentialGroup()
                                 .addGap(4, 4, 4)
-                                .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
+                                .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(pnlDatosLayout.createSequentialGroup()
                                 .addGap(4, 4, 4)
                                 .addComponent(txtApellidoPaterno, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
@@ -318,9 +312,9 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
         });
 
         txtbRegistrarse.setBackground(new java.awt.Color(255, 255, 255));
-        txtbRegistrarse.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
+        txtbRegistrarse.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 24)); // NOI18N
         txtbRegistrarse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtbRegistrarse.setText("Iniciar sesion");
+        txtbRegistrarse.setText("Iniciar Sesión");
         txtbRegistrarse.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         txtbRegistrarse.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
@@ -341,7 +335,8 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
                 .addContainerGap())
         );
 
-        jLabel11.setFont(new java.awt.Font("Eras Medium ITC", 0, 36)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Gill Sans MT", 0, 36)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/registro.png"))); // NOI18N
         jLabel11.setText("REGISTRARSE");
 
@@ -369,14 +364,14 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
                         .addGap(349, 349, 349))
                     .addGroup(panelFondoLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addGroup(panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnlDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(panelFondoLayout.createSequentialGroup()
-                                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(189, 189, 189)))
-                        .addGap(54, 54, 54))))
+                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(228, 228, 228))
+                    .addGroup(panelFondoLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(pnlDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(20, 20, 20))))
         );
         panelFondoLayout.setVerticalGroup(
             panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -397,9 +392,7 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(panelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -434,12 +427,14 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
     }//GEN-LAST:event_panelBtnRegistrarseMouseExited
 
     private void myButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myButtonActionPerformed
-
+//se hace una validacion si edad y curp esta bien escrita            
+       if (txtCurp.getText().matches("[A-Z]{4}[\\d]{6}[A-Z]{6,7}[0-9]{1,2}$")&&txtEdad.getText().matches("[0-9]{1,2}")) {
+           
           String nombre = this.TxtNombre.getText();
           String apellido_paterno = this.txtApellidoPaterno.getText();
           String apellido_materno = this.txtApellidoMaterno.getText();
           String edad = this.txtEdad.getText();
-          //pasamos los valores de tipo string a int
+//pasamos los valores de tipo string a int
           int edad2 = Integer.valueOf(edad);
          
           String curp = this.txtCurp.getText();
@@ -447,7 +442,25 @@ public class jframeRegistrarse extends javax.swing.JFrame implements Border {
           String password = this.txtPassword.getText();
           
            cone.registrarse(nombre, apellido_paterno, apellido_materno, edad2, curp, usuario, password);
+        }else{
            
+            if (txtCurp.getText().matches("[A-Z]{4}[\\d]{6}[A-Z]{6,7}[0-9]{1,2}$")) {
+//si esta correcto no queremos que imprima nada ya que no estaria aqui si estaria correcto
+            }else{
+               JOptionPane.showMessageDialog(null, "error al poner la curp no es valida  ");
+            }
+            
+            if (txtEdad.getText().matches("[0-9]{1,2}")) {
+//si esta correcto se ignora por que estaria incorrecto la curp
+            }else{
+               JOptionPane.showMessageDialog(null, "error en la edad ");
+            }
+
+            
+            
+            
+        }
+            
     }//GEN-LAST:event_myButtonActionPerformed
 
     private void myButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myButtonMouseClicked

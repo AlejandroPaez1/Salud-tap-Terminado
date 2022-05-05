@@ -74,7 +74,7 @@ public class InicioSesion extends javax.swing.JFrame {
         btnIniciarSesion.setFont(new java.awt.Font("Cambria", 3, 24)); // NOI18N
         btnIniciarSesion.setForeground(new java.awt.Color(0, 0, 51));
         btnIniciarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ingresados.png"))); // NOI18N
-        btnIniciarSesion.setText("Iniciar sesion");
+        btnIniciarSesion.setText("Iniciar Sesión");
         btnIniciarSesion.setBorder(null);
         btnIniciarSesion.setBorderPainted(false);
         btnIniciarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -287,13 +287,12 @@ public class InicioSesion extends javax.swing.JFrame {
 
             if (conec.rs.next()) {
                 // this.dispose();
+
                 new Jframeprincipal().setVisible(true);
+
                 txtprueba.setText("Bienvenido "+ conec.rs.getString("nombre"));
-                //prin.LabelNombre.setText("welcome"+conec.rs.getString("nombre"));
-
-                //prin.LabelNombre.setText("bienvenido" + conec.rs.getString("nombre"));
-
                 conec.desconectar();
+      
             } else {
                 JOptionPane.showMessageDialog(null, "usuario y contraseña incorrecto");
             }

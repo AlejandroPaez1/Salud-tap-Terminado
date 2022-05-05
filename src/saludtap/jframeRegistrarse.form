@@ -27,10 +27,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="panelFondo" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
-          </Group>
+          <Component id="panelFondo" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -43,7 +40,7 @@
     <Container class="javax.swing.JPanel" name="panelFondo">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="71" green="b3" red="3c" type="rgb"/>
+          <Color blue="ff" green="99" red="66" type="rgb"/>
         </Property>
       </Properties>
 
@@ -60,16 +57,15 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="pnlDatos" max="32767" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="jLabel11" pref="295" max="32767" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jLabel1" max="32767" attributes="0"/>
-                                  <EmptySpace min="-2" pref="189" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                          <Component id="jLabel11" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabel1" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="228" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="pnlDatos" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -78,14 +74,14 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" pref="80" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                   <Component id="pnlDatos" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                   <Component id="panelBtnRegistrarse" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -125,7 +121,7 @@
                                   <Component id="txtPassword" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
-                              <Component id="myButton" pref="152" max="32767" attributes="0"/>
+                              <Component id="myButton" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
@@ -137,7 +133,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                                      <Component id="txtApellidoMaterno" pref="0" max="32767" attributes="0"/>
+                                      <Component id="txtApellidoMaterno" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
                                       <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
@@ -267,7 +263,7 @@
                   <Font name="Tw Cen MT Condensed Extra Bold" size="18" style="0"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="*curp"/>
+                <Property name="text" type="java.lang.String" value="*CURP"/>
                 <Property name="verticalTextPosition" type="int" value="1"/>
               </Properties>
             </Component>
@@ -331,7 +327,6 @@
             </Component>
             <Component class="jtextfieldround.JTextFieldRound" name="txtCurp">
               <Properties>
-                <Property name="text" type="java.lang.String" value="PAPA0108920001CH"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tw Cen MT" size="20" style="0"/>
                 </Property>
@@ -339,7 +334,6 @@
             </Component>
             <Component class="jtextfieldround.JTextFieldRound" name="txtEdad">
               <Properties>
-                <Property name="text" type="java.lang.String" value="20"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tw Cen MT" size="20" style="0"/>
                 </Property>
@@ -350,7 +344,6 @@
             </Component>
             <Component class="jtextfieldround.JTextFieldRound" name="TxtNombre">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Alejandro"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tw Cen MT" size="20" style="0"/>
                 </Property>
@@ -361,7 +354,6 @@
             </Component>
             <Component class="jtextfieldround.JTextFieldRound" name="txtApellidoPaterno">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Paez"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tw Cen MT" size="20" style="0"/>
                 </Property>
@@ -369,7 +361,6 @@
             </Component>
             <Component class="jtextfieldround.JTextFieldRound" name="txtApellidoMaterno">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Perez"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tw Cen MT" size="20" style="0"/>
                 </Property>
@@ -380,7 +371,6 @@
             </Component>
             <Component class="jtextfieldround.JTextFieldRound" name="txtUsuario">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Alexosas"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tw Cen MT" size="20" style="0"/>
                 </Property>
@@ -391,7 +381,6 @@
             </Component>
             <Component class="jtextfieldround.JPasswordFieldRound" name="txtPassword">
               <Properties>
-                <Property name="text" type="java.lang.String" value="jPasswordFieldRound2"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tw Cen MT" size="20" style="0"/>
                 </Property>
@@ -438,10 +427,10 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tw Cen MT Condensed Extra Bold" size="18" style="0"/>
+                  <Font name="Tw Cen MT Condensed Extra Bold" size="24" style="0"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Iniciar sesion"/>
+                <Property name="text" type="java.lang.String" value="Iniciar Sesi&#xf3;n"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="1"/>
               </Properties>
@@ -451,7 +440,10 @@
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Eras Medium ITC" size="36" style="0"/>
+              <Font name="Gill Sans MT" size="36" style="0"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/imagenes/registro.png"/>

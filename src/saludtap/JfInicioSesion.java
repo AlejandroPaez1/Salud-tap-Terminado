@@ -20,31 +20,22 @@ import javax.swing.JOptionPane;
 public class JfInicioSesion extends javax.swing.JFrame {
 
     Jframeprincipal framePrincipal = new Jframeprincipal();
-            Conectar conec = new Conectar();
+    Conectar conec = new Conectar();
 
     /**
      * Creates new form Jfiniciosesion
      */
     public JfInicioSesion() {
 
-//            Toolkit laPantalla = Toolkit.getDefaultToolkit();
-//            Dimension medidas=laPantalla.getScreenSize();    
-//                                        //ubicacion del archivo
-//            Image iconito =  laPantalla.getImage("src/imagenes/logoApp.png");
-//        //insertamos el icono 
-//            setIconImage(iconito);
         initComponents();
         colocarImagen();
         iconoAPP();
-
         panelLateral.setBackground(framePrincipal.colorPrinCuandoSePasaElmouse);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        
+
     }
 
-    
-    
     private void colocarImagen() {
         PanelImagen.setLayout(new BorderLayout());
         JLabel etiquetaLogin = new JLabel(new ImageIcon("src/imagenes/estete.jpg"));
@@ -65,7 +56,6 @@ public class JfInicioSesion extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -79,18 +69,20 @@ public class JfInicioSesion extends javax.swing.JFrame {
         btn_registrarse = new javax.swing.JButton();
         panelLateral = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtFacebook = new javax.swing.JTextArea();
         txtUsuario = new jtextfieldround.JTextFieldRound();
         txtPass = new jtextfieldround.JPasswordFieldRound();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SALUD TAP");
+        setMinimumSize(new java.awt.Dimension(350, 710));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
+
+        PanelImagen.setName(""); // NOI18N
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -112,7 +104,7 @@ public class JfInicioSesion extends javax.swing.JFrame {
         btnIniciarSesion.setFont(new java.awt.Font("Cambria", 3, 24)); // NOI18N
         btnIniciarSesion.setForeground(new java.awt.Color(0, 0, 51));
         btnIniciarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ingresados.png"))); // NOI18N
-        btnIniciarSesion.setText("Iniciar sesion");
+        btnIniciarSesion.setText("Iniciar Sesión");
         btnIniciarSesion.setBorder(null);
         btnIniciarSesion.setBorderPainted(false);
         btnIniciarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -135,7 +127,7 @@ public class JfInicioSesion extends javax.swing.JFrame {
         jLabel8.setText("Si no tiene cuenta puede registrarse aquí");
 
         btn_registrarse.setBackground(new java.awt.Color(255, 255, 255));
-        btn_registrarse.setFont(new java.awt.Font("Serif", 3, 14)); // NOI18N
+        btn_registrarse.setFont(new java.awt.Font("Sitka Display", 3, 14)); // NOI18N
         btn_registrarse.setText("Registrarse");
         btn_registrarse.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 0, 51), null));
         btn_registrarse.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -172,19 +164,6 @@ public class JfInicioSesion extends javax.swing.JFrame {
         jLabel2.setToolTipText("");
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        txtFacebook.setEditable(false);
-        txtFacebook.setColumns(20);
-        txtFacebook.setRows(5);
-        txtFacebook.setText("para mas informacion \ncontactenos en nuestra\npagina de facebook\n\nPRESIONE AQUI PARA SEGUIR NUESTRA\nPAGINA DE FACEBOOK");
-        txtFacebook.setBorder(null);
-        txtFacebook.setRequestFocusEnabled(false);
-        txtFacebook.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtFacebookMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(txtFacebook);
-
         txtUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsuarioActionPerformed(evt);
@@ -198,6 +177,15 @@ public class JfInicioSesion extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/conocemasdenosotros.png"))); // NOI18N
+        jLabel1.setText("jLabel1");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -205,6 +193,10 @@ public class JfInicioSesion extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(panelLateral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(103, 103, 103))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -221,19 +213,14 @@ public class JfInicioSesion extends javax.swing.JFrame {
                                     .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addGap(62, 62, 62)
                                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap())
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(34, 34, 34))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(57, 57, 57))))))
+                                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(60, 60, 60)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,13 +238,13 @@ public class JfInicioSesion extends javax.swing.JFrame {
                 .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout PanelImagenLayout = new javax.swing.GroupLayout(PanelImagen);
@@ -266,7 +253,7 @@ public class JfInicioSesion extends javax.swing.JFrame {
             PanelImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelImagenLayout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 623, Short.MAX_VALUE))
+                .addGap(0, 564, Short.MAX_VALUE))
         );
         PanelImagenLayout.setVerticalGroup(
             PanelImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,35 +271,29 @@ public class JfInicioSesion extends javax.swing.JFrame {
 
             framePrincipal.JtAMiCita.setText("");
             String idPaciente = framePrincipal.laID.getText();
-            
 
-            String SQL = " select fecha,hora,descripcion,folio from citas where id_cita_p='" +idPaciente+ "';";
+            String SQL = " select fecha,hora,descripcion,folio from citas where id_cita_p='" + idPaciente + "';";
 
             conec.rs = conec.sentencia.executeQuery(SQL);
-            
 
             // TxtResultado.setText("datos a imprimir"+ conec.rs.getString("nombre"));
             while (conec.rs.next()) {
                 //System.out.println("\n datos a imprimir "+conec.rs.getString("fecha")+" "+conec.rs.getString("hora")+conec.rs.getString("descripcion"));
-                
+
                 framePrincipal.JtAMiCita.append("\n su cita es el dia " + conec.rs.getString("fecha") + " "
                         + "\n alas " + conec.rs.getString("hora") + ""
                         + "\n por el motivo de " + conec.rs.getString("descripcion") + ""
-                         + "\n con numero folio n°: "+conec.rs.getString("folio")+"\n");
-                
-                
+                        + "\n con numero folio n°: " + conec.rs.getString("folio") + "\n");
+
             }
 
         } catch (Exception e) {
             System.out.println("error al hacer Select " + e.getMessage());
         }
     }
-     
 
-     
-    
-   public void iniciarSesion(){
-   
+    public void iniciarSesion() {
+
         try {
             //Conecction conec = new Conecction();
             String usuario = txtUsuario.getText();
@@ -324,7 +305,7 @@ public class JfInicioSesion extends javax.swing.JFrame {
 
             if (conec.rs.next()) {
                 this.dispose();
-           framePrincipal.LabelNombre.setText("Bienvenido " + conec.rs.getString("nombre")+" "+conec.rs.getString("apellido_paterno"));
+                framePrincipal.LabelNombre.setText("Bienvenido " + conec.rs.getString("nombre") + " " + conec.rs.getString("apellido_paterno"));
                 framePrincipal.txtNombre.setText("" + conec.rs.getString("nombre"));
                 framePrincipal.txtApellido.setText("" + conec.rs.getString("apellido_paterno"));
                 framePrincipal.txtApellidoM.setText("" + conec.rs.getString("apellido_materno"));
@@ -333,11 +314,13 @@ public class JfInicioSesion extends javax.swing.JFrame {
                 framePrincipal.txtUsuario.setText("" + conec.rs.getString("usuario"));
                 framePrincipal.txtPassword.setText("" + conec.rs.getString("password"));
                 framePrincipal.laID.setText("" + conec.rs.getString("id"));
-                
+
                 framePrincipal.setVisible(true);
+//se pone la pantalla del menu
+                framePrincipal.jTabbedPane1.setSelectedIndex(0);
+                framePrincipal.estadosSwitch("pushInformacion");
 //se llama ala funcion de mostrar cita para que no haga mas codigo aqui                
-       
-               
+
                 mostrarCitas();
 //se desconecta ala bd para no saturar de conexiones                
                 conec.desconectar();
@@ -348,18 +331,15 @@ public class JfInicioSesion extends javax.swing.JFrame {
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, error.getMessage());
         }
-   
-   }   
-     
-     
+
+    }
+
+
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         iniciarSesion();
-
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
-   
-    
-    
+
     private void btn_registrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registrarseActionPerformed
         // TODO add your handling code here:
         this.dispose();
@@ -396,13 +376,6 @@ public class JfInicioSesion extends javax.swing.JFrame {
         btn_registrarse.setForeground(new java.awt.Color(0, 0, 72));
     }//GEN-LAST:event_btn_registrarseMouseExited
 
-    private void txtFacebookMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFacebookMouseClicked
-        try {
-            Desktop.getDesktop().browse(new URI("https://www.youtube.com/watch?v=1yVMYQQlWAQ"));
-        } catch (IOException | URISyntaxException e1) {
-        }        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFacebookMouseClicked
-
     private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPassActionPerformed
@@ -415,9 +388,16 @@ public class JfInicioSesion extends javax.swing.JFrame {
         // TODO add your handling code here:
         conec.desconectar();
         conec.cierraConsultas();
-          System.exit(0);
-        
+        System.exit(0);
+
     }//GEN-LAST:event_formWindowClosing
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        try {
+            Desktop.getDesktop().browse(new URI("https://www.unach.mx/"));
+        } catch (IOException | URISyntaxException el) {
+        }
+    }//GEN-LAST:event_jLabel1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -427,14 +407,13 @@ public class JfInicioSesion extends javax.swing.JFrame {
     private javax.swing.JPanel PanelImagen;
     private javax.swing.JButton btnIniciarSesion;
     private javax.swing.JButton btn_registrarse;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelLateral;
-    private javax.swing.JTextArea txtFacebook;
     private jtextfieldround.JPasswordFieldRound txtPass;
     public jtextfieldround.JTextFieldRound txtUsuario;
     // End of variables declaration//GEN-END:variables

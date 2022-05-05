@@ -78,12 +78,13 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
     public void cajaCombo() {
         JcomboSeleccionar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"seleccionar"}));
         try {
-
+//se recupera la id del paciente en el que se ah ingresado
             String id = this.laID.getText();
             int idPaciente = Integer.valueOf(id);
 
             String SQL = " select folio from citas where id_cita_p = '" + idPaciente + "';";
             conec.rs = conec.sentencia.executeQuery(SQL);
+//si detecta un un objeto como respuesta entra al if
             if (conec.rs.next()) {
 //entra a un while para poder añadir al jcombo
                 JcomboSeleccionar.addItem("" + conec.rs.getString("folio"));
@@ -101,9 +102,9 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                                 JtAMiCita.setText("");
                                 JtIResultadoCita.setText("");
 
-                
-               JOptionPane.showMessageDialog(null, "no tienes citas"
-                     + "\n por favor agrega una cita para poder cancelar su cita");
+// mensaje de error si no tiene citas                
+               JOptionPane.showMessageDialog(null, "No tienes citas"
+                     + "\n Por favor agrega una cita para poder cancelar su cita");
                
             }
         } catch (SQLException error) {
@@ -119,32 +120,31 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
             String fecha2 = new SimpleDateFormat("dd/MM/yyyy").format(this.Jfecha.getDate());
 //seleccionamos del combobox la hora
             String Jhora = JcomboHora.getSelectedItem().toString();
-
+// obtenemos la descripcion
             String descripcion = JtareDescripcion.getText();
-
+//obtenemos la id del paciente que ah ingresado
             String id = this.laID.getText();
             int idPaciente = Integer.valueOf(id);
-
-            // System.out.println("la fecha es " + fecha2 + " con hora " + Jhora + " con descrip " + descripcion);
+//consulta para validar si hay alguna consulta
             String SQL = "SELECT folio FROM citas WHERE fecha ='" + fecha2 + "' and hora='" + Jhora + "';";
 
-//            String SQL2 = "insert into citas values ('31/12/2020','9pm','balazos',2);";
             conec.rs = conec.sentencia.executeQuery(SQL);
 
             if (conec.rs.next()) {
                 JOptionPane.showMessageDialog(null, "UPS la hora y la fecha esta ocupada seleccione otra fecha por favor");
 
             } else {
+//si no encuentra consulta se procede a guardar la cita                
                 conec.registrarCita(fecha2, Jhora, descripcion, idPaciente);
 
-                JtIResultadoCita.setText("la cita es el dia: \n"
+                JtIResultadoCita.setText("La cita es el día: \n"
                         + "\n" + fecha2 + " con hora " + Jhora + "\n"
                         + "\n con el razon de su cita de  \n"
                         + descripcion);
         
-                JtAMiCita.append("\n su cita es el dia " + fecha2 + " "
-                        + "\n alas " + Jhora + ""
-                        + "\n por el motivo de " + descripcion + "\n");
+                JtAMiCita.append("\n Su cita es el día " + fecha2 + " "
+                        + "\n a las " + Jhora + ""
+                        + "\n horas, por el motivo de " + descripcion + "\n");
 
 //se vuelve a ejecutar la sentencia query para que muestre el numero de folio
                 String SQL2 = "SELECT folio FROM citas WHERE fecha ='" + fecha2 + "' and hora='" + Jhora + "';";
@@ -174,7 +174,9 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
     }
 
     private void ActualizarDatos() {
-
+        
+        if (txtCurp.getText().matches("[A-Z]{4}[\\d]{6}[A-Z]{6,7}[0-9]{1,2}$") && txtEdad.getText().matches("[0-9]{1,2}")) {
+// se recupera los datos del campo de texto del panel miperfil
         String nombre = this.txtNombre.getText();
         String apellido_paterno = this.txtApellido.getText();
         String apellido_materno = this.txtApellidoM.getText();
@@ -188,15 +190,33 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
         String id = this.laID.getText();
         int id2 = Integer.valueOf(id);
+//se manda a actualizar datos ala clase conectar
+            conec.actualizar(nombre, apellido_paterno, apellido_materno, edad2, curp, usuario, password, id2);
 
-        conec.actualizar(nombre, apellido_paterno, apellido_materno, edad2, curp, usuario, password, id2);
+        } else {
+
+            if (txtCurp.getText().matches("[A-Z]{4}[\\d]{6}[A-Z]{6,7}[0-9]{1,2}$")) {
+//si esta correcto no queremos que imprima nada ya que no estaria aqui si estaria correcto
+            } else {
+                JOptionPane.showMessageDialog(null, "error al poner la curp no es valida  ");
+            }
+
+            if (txtEdad.getText().matches("[0-9]{1,2}")) {
+//si esta correcto se ignora por que estaria incorrecto la curp
+            } else {
+                JOptionPane.showMessageDialog(null, "error en la edad ");
+            }
+
+        }
+
 
     }
 
     private void BuscarCita() {
-
         try {
+//se obtiene el valor que esta en el combod de seleccionar            
             String folio = JcomboSeleccionar.getSelectedItem().toString();
+
             String SQL = "select fecha,hora,descripcion,folio from citas where folio='" + folio + "';";
 
             conec.rs = conec.sentencia.executeQuery(SQL);
@@ -206,7 +226,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                         + " " + txtNombre.getText()
                         + " " + txtApellido.getText()
                         + " " + txtApellidoM.getText()
-                        + "\n\nSu cita del dia: \n "
+                        + "\n\nSu cita del día: \n "
                         + "con fecha de " + conec.rs.getString("fecha")
                         + " alas " + "" + conec.rs.getString("hora") + " \n"
                         + "\ncon el motivo de \n" + conec.rs.getString("descripcion") + "\n"
@@ -232,22 +252,21 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
     private void BorrarCita() {
         String folio3 = JcomboSeleccionar.getSelectedItem().toString();
+//si el paciente selecciona el texto seleccionar le muestra un error
         if (folio3 == "seleccionar") {
             JOptionPane.showMessageDialog(rootPane, "seleciona otro que no sea SELECCIONAR", "MENSAJE DE ADVERTENCIA", 1);
 
         }else{
              BuscarCita();           
-     if (JOptionPane.showConfirmDialog(rootPane, "Se eliminará el registro, ¿deseas continuar?",
+             if (JOptionPane.showConfirmDialog(rootPane, "Se eliminará el registro, ¿deseas continuar?",
              "Eliminar Registro", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            
-         try {
-                
+           try {
                 String folioC = JcomboSeleccionar.getSelectedItem().toString();
                 String SQL = " delete from citas where folio = '" + folioC + "';";
                 conec.rs = conec.sentencia.executeQuery(SQL);
-                 } catch (Exception e) {
+           } catch (Exception e) {
                         System.out.println("error de borrar " + e.getMessage());
-                }
+            }
                     JOptionPane.showMessageDialog(null, "OK acabas de borrar la cita");
 
         } else {
@@ -257,13 +276,14 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
     }
 
-    private void estadosSwitch(String estado) {
+    public void estadosSwitch(String estado) {
+//estado switch para poder cambiar de color los botones y regresar a default los demas        
         switch (estado) {
             case "pushInformacion":
                 btnPanelInformacion.setBackground(colorPrinCuandoSePasaElmouse);
                 txtInformacion.setForeground(colorBlanco);
 
-//          regresar a default los demas botones           
+// regresar a default los demas botones           
                 btnPanelMisCitas.setBackground(colorCuandoSaleDelMouse);
                 txtMisCitas.setForeground(colorNegro);
 
@@ -276,12 +296,16 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                 btnPanelPerfil.setBackground(colorCuandoSaleDelMouse);
                 txtMiPerfil.setForeground(colorNegro);
 
+                txtAcerca.setBackground(colorCuandoSaleDelMouse);
+                txtAcerca.setForeground(colorNegro);
+
                 break;
 
             case "pushMisCitas":
                 btnPanelInformacion.setBackground(colorCuandoSaleDelMouse);
                 txtInformacion.setForeground(colorNegro);
 
+// regresar a default los demas botones           
                 btnPanelMisCitas.setBackground(colorPrinCuandoSePasaElmouse);
                 txtMisCitas.setForeground(colorBlanco);
 
@@ -294,11 +318,18 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                 btnPanelPerfil.setBackground(colorCuandoSaleDelMouse);
                 txtMiPerfil.setForeground(colorNegro);
 
+                txtAcerca.setBackground(colorCuandoSaleDelMouse);
+                txtAcerca.setForeground(colorNegro);
+
+                txtAcerca.setBackground(colorCuandoSaleDelMouse);
+                txtAcerca.setForeground(colorNegro);
+
                 break;
             case "pushNuevaCita":
                 btnPanelInformacion.setBackground(colorCuandoSaleDelMouse);
                 txtInformacion.setForeground(colorNegro);
 
+// regresar a default los demas botones           
                 btnPanelMisCitas.setBackground(colorCuandoSaleDelMouse);
                 txtMisCitas.setForeground(colorNegro);
 
@@ -311,11 +342,15 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                 btnPanelPerfil.setBackground(colorCuandoSaleDelMouse);
                 txtMiPerfil.setForeground(colorNegro);
 
+                txtAcerca.setBackground(colorCuandoSaleDelMouse);
+                txtAcerca.setForeground(colorNegro);
+
                 break;
 
             case "pushCancelar":
                 btnPanelInformacion.setBackground(colorCuandoSaleDelMouse);
                 txtInformacion.setForeground(colorNegro);
+// regresar a default los demas botones           
 
                 btnPanelMisCitas.setBackground(colorCuandoSaleDelMouse);
                 txtMisCitas.setForeground(colorNegro);
@@ -329,11 +364,15 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                 btnPanelPerfil.setBackground(colorCuandoSaleDelMouse);
                 txtMiPerfil.setForeground(colorNegro);
 
+                txtAcerca.setBackground(colorCuandoSaleDelMouse);
+                txtAcerca.setForeground(colorNegro);
+
                 break;
 
             case "pushPerfil":
                 btnPanelInformacion.setBackground(colorCuandoSaleDelMouse);
                 txtInformacion.setForeground(colorNegro);
+// regresar a default los demas botones           
 
                 btnPanelMisCitas.setBackground(colorCuandoSaleDelMouse);
                 txtMisCitas.setForeground(colorNegro);
@@ -346,9 +385,11 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
                 btnPanelPerfil.setBackground(colorPrinCuandoSePasaElmouse);
                 txtMiPerfil.setForeground(colorBlanco);
+
+                txtAcerca.setBackground(colorCuandoSaleDelMouse);
+                txtAcerca.setForeground(colorNegro);
                 break;
             case "default":
-                System.out.println("el ottro boton");
                 txtAcerca.setBackground(colorPrinCuandoSePasaElmouse);
                 txtAcerca.setForeground(colorBlanco);
 
@@ -364,6 +405,28 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
                 btnPanelPerfil.setBackground(colorCuandoSaleDelMouse);
                 txtMiPerfil.setForeground(colorNegro);
+
+                txtAcerca.setBackground(colorCuandoSaleDelMouse);
+                txtAcerca.setForeground(colorNegro);
+                break;
+            case "txtAcerca":
+
+                txtAcerca.setBackground(colorPrinCuandoSePasaElmouse);
+                txtAcerca.setForeground(colorBlanco);
+
+// regresar a default los demas botones           
+                btnPanelMisCitas.setBackground(colorCuandoSaleDelMouse);
+                txtMisCitas.setForeground(colorNegro);
+
+                btnPanelNuevaCita.setBackground(colorCuandoSaleDelMouse);
+                txtNuevaCita.setForeground(colorNegro);
+
+                btnPanelCancelar.setBackground(colorCuandoSaleDelMouse);
+                txtCancelarcita.setForeground(colorNegro);
+
+                btnPanelPerfil.setBackground(colorCuandoSaleDelMouse);
+                txtMiPerfil.setForeground(colorNegro);
+
                 break;
 
             default:
@@ -374,7 +437,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
     @Override
     public void mouseClicked(java.awt.event.MouseEvent e) {
-        //Detecta el click sobre los paneles 
+//Detecta el click sobre los paneles que funcionan como botones
         if (e.getSource() == btnPanelInformacion) {
             jTabbedPane1.setSelectedIndex(0);
             estadosSwitch("pushInformacion");
@@ -389,20 +452,22 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
         } else if (e.getSource() == btnPanelCancelar) {
             cajaCombo();
-            txtAreaCancelarC.setText("Por favor selecciona un numero de folio");
+// se pone el area de texto para que no se vea vacio           
+            txtAreaCancelarC.setText("Por favor selecciona un número de folio");
             jTabbedPane1.setSelectedIndex(3);
             estadosSwitch("pushCancelar");
 
         } else if (e.getSource() == btnPanelPerfil) {
             jTabbedPane1.setSelectedIndex(4);
             estadosSwitch("pushPerfil");
+            
         } else if (e.getSource() == btnPanelInformacion) {
-            //preueba del panel
             jTabbedPane1.setSelectedIndex(0);
-
             estadosSwitch("default");
+            
         } else if (e.getSource() == txtAcerca) {
             jTabbedPane1.setSelectedIndex(5);
+            estadosSwitch("txtAcerca");
 
         } else if (e.getSource() == JtareDescripcion) {
             JtareDescripcion.setText("");
@@ -411,8 +476,10 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
     @Override
     public void mouseEntered(java.awt.event.MouseEvent e) {
+//metodo para cuando pasa el mouse encima del botones cambien de color pero no implementado por que no
+// se quedaban fijo
+
         if (e.getSource() == btnCancelarCita) {
-            //color rojo
             btnCancelarCita.setBackground(new java.awt.Color(255, 26, 27));
             btnCancelarCita.setForeground(colorBlanco);
         } else if (e.getSource() == BtnAgendarCita) {
@@ -462,8 +529,8 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
     @Override
     public void mouseExited(java.awt.event.MouseEvent e) {
+//cuando sale del mouse del area del boton se regresa a un color base pero no queda fijo
 
-        //cuando sale del mouse del area del boton se regresa a un color base
         if (e.getSource() == btnCancelarCita) {
             btnCancelarCita.setBackground(colorCuandoSaleDelMouse);
             btnCancelarCita.setForeground(colorNegro);
@@ -524,21 +591,14 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         txtCancelarcita = new javax.swing.JLabel();
         btnPanelPerfil = new javax.swing.JPanel();
         txtMiPerfil = new javax.swing.JLabel();
-        panelprueba2 = new javax.swing.JPanel();
-        btnRegresarARegistrarse = new javax.swing.JButton();
         txtAcerca = new jtextfieldround.JTextFieldRound();
+        btnRegresarARegistrarse = new javax.swing.JButton();
         contieneTabbed = new javax.swing.JPanel();
         panelcabecera = new javax.swing.JPanel();
         LabelNombre = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         p1Informacion = new javax.swing.JPanel();
-        jPanel24 = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         P2misCitas = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
         jPanel26 = new javax.swing.JPanel();
@@ -596,11 +656,13 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         laID = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SALUD TAP");
+        setMinimumSize(new java.awt.Dimension(300, 710));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -610,7 +672,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(120, 192, 224));
+        jPanel2.setBackground(new java.awt.Color(0, 113, 233));
         jPanel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel2.setInheritsPopupMenu(true);
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -642,6 +704,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
         btnPanelInformacion.setBackground(new java.awt.Color(255, 255, 255));
         btnPanelInformacion.setForeground(new java.awt.Color(255, 255, 255));
+        btnPanelInformacion.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         btnPanelInformacion.setEnabled(false);
         btnPanelInformacion.setRequestFocusEnabled(false);
         btnPanelInformacion.setVerifyInputWhenFocusTarget(false);
@@ -660,7 +723,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         txtInformacion.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 36)); // NOI18N
         txtInformacion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         txtInformacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/expediente.png"))); // NOI18N
-        txtInformacion.setText("Informacion");
+        txtInformacion.setText("Información");
         txtInformacion.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         javax.swing.GroupLayout btnPanelInformacionLayout = new javax.swing.GroupLayout(btnPanelInformacion);
@@ -680,6 +743,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         jPanel2.add(btnPanelInformacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 250, 40));
 
         btnPanelMisCitas.setBackground(new java.awt.Color(255, 255, 255));
+        btnPanelMisCitas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPanelMisCitas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnPanelMisCitasMouseClicked(evt);
@@ -713,6 +777,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         jPanel2.add(btnPanelMisCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, 40));
 
         btnPanelNuevaCita.setBackground(new java.awt.Color(255, 255, 255));
+        btnPanelNuevaCita.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPanelNuevaCita.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnPanelNuevaCitaMouseClicked(evt);
@@ -748,6 +813,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         jPanel2.add(btnPanelNuevaCita, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, -1, -1));
 
         btnPanelCancelar.setBackground(new java.awt.Color(255, 255, 255));
+        btnPanelCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPanelCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnPanelCancelarMouseClicked(evt);
@@ -782,6 +848,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
         btnPanelPerfil.setBackground(new java.awt.Color(255, 255, 255));
         btnPanelPerfil.setForeground(new java.awt.Color(102, 102, 255));
+        btnPanelPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPanelPerfil.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnPanelPerfilMouseClicked(evt);
@@ -816,38 +883,22 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
         jPanel2.add(btnPanelPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 400, -1, -1));
 
-        panelprueba2.setBackground(new java.awt.Color(255, 255, 51));
+        txtAcerca.setText("ACERCA DE");
+        txtAcerca.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        txtAcerca.setFocusable(false);
+        txtAcerca.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 36)); // NOI18N
+        jPanel2.add(txtAcerca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 270, 40));
 
-        btnRegresarARegistrarse.setText("Registrarse");
+        btnRegresarARegistrarse.setBackground(new java.awt.Color(255, 255, 255));
+        btnRegresarARegistrarse.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 30)); // NOI18N
+        btnRegresarARegistrarse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ingresados.png"))); // NOI18N
+        btnRegresarARegistrarse.setText("Cerrar Sesión");
         btnRegresarARegistrarse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarARegistrarseActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout panelprueba2Layout = new javax.swing.GroupLayout(panelprueba2);
-        panelprueba2.setLayout(panelprueba2Layout);
-        panelprueba2Layout.setHorizontalGroup(
-            panelprueba2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelprueba2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnRegresarARegistrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
-        );
-        panelprueba2Layout.setVerticalGroup(
-            panelprueba2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelprueba2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnRegresarARegistrarse, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jPanel2.add(panelprueba2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 450, 120, 60));
-
-        txtAcerca.setText("ACERCA DE");
-        txtAcerca.setFocusable(false);
-        txtAcerca.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 36)); // NOI18N
-        jPanel2.add(txtAcerca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 270, 40));
+        jPanel2.add(btnRegresarARegistrarse, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, 190, -1));
 
         contieneTabbed.setBackground(new java.awt.Color(102, 255, 102));
 
@@ -861,7 +912,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         panelcabeceraLayout.setHorizontalGroup(
             panelcabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelcabeceraLayout.createSequentialGroup()
-                .addGap(130, 130, 130)
+                .addGap(33, 33, 33)
                 .addComponent(LabelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -874,72 +925,17 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         jTabbedPane1.setEnabled(false);
         jTabbedPane1.setVerifyInputWhenFocusTarget(false);
 
-        jPanel24.setBackground(new java.awt.Color(255, 247, 191));
-        jPanel24.setForeground(new java.awt.Color(204, 255, 255));
-
-        jLabel20.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
-        jLabel20.setText("Estadisticas de la tasa de mortandad");
-
-        jLabel2.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        jLabel2.setText("Grafico de pastel muertes por covid");
-
-        jLabel21.setText("CHIAPAS MEXICO");
-
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/grafica (1).png"))); // NOI18N
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/COVID.png"))); // NOI18N
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/vacuna.png"))); // NOI18N
-        jLabel7.setText("jLabel7");
-
-        javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
-        jPanel24.setLayout(jPanel24Layout);
-        jPanel24Layout.setHorizontalGroup(
-            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel24Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel24Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel24Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 354, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(40, 40, 40))
-        );
-        jPanel24Layout.setVerticalGroup(
-            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel24Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(24, 24, 24)
-                .addComponent(jLabel20)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addContainerGap(24, Short.MAX_VALUE))
-        );
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/INFORMACION.png"))); // NOI18N
 
         javax.swing.GroupLayout p1InformacionLayout = new javax.swing.GroupLayout(p1Informacion);
         p1Informacion.setLayout(p1InformacionLayout);
         p1InformacionLayout.setHorizontalGroup(
             p1InformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(p1InformacionLayout.createSequentialGroup()
-                .addComponent(jPanel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         p1InformacionLayout.setVerticalGroup(
             p1InformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("tab1", p1Informacion);
@@ -971,6 +967,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         JtAMiCita.setColumns(20);
+        JtAMiCita.setFont(new java.awt.Font("NSimSun", 0, 18)); // NOI18N
         JtAMiCita.setRows(5);
         jScrollPane3.setViewportView(JtAMiCita);
 
@@ -984,7 +981,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel27Layout = new javax.swing.GroupLayout(jPanel27);
@@ -1074,11 +1071,13 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         });
 
         JtareDescripcion.setColumns(20);
+        JtareDescripcion.setFont(new java.awt.Font("NSimSun", 0, 14)); // NOI18N
         JtareDescripcion.setRows(5);
         JtareDescripcion.setText("por favor escriba el\n motivo de su consulta");
         JtareDescripcion.setToolTipText("");
         JtareDescripcion.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Razon de su cita", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tw Cen MT Condensed", 0, 18))); // NOI18N
         jScrollPane1.setViewportView(JtareDescripcion);
+        JtareDescripcion.getAccessibleContext().setAccessibleName("Razón de su cita");
         JtareDescripcion.getAccessibleContext().setAccessibleDescription("escriba la razon de su cita");
 
         Jfecha.setBackground(new java.awt.Color(51, 255, 51));
@@ -1096,11 +1095,11 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                     .addGroup(jPanel28Layout.createSequentialGroup()
                         .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(Jfecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+                            .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE))
                         .addGap(23, 23, 23)))
                 .addGap(73, 73, 73)
                 .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnAgendarCita, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                    .addComponent(BtnAgendarCita, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
                     .addComponent(JcomboHora, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(49, 49, 49))
@@ -1127,7 +1126,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
-        jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel5.setText("INFORMACIÓN DE SU CITA");
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
@@ -1135,6 +1134,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
         JtIResultadoCita.setEditable(false);
         JtIResultadoCita.setColumns(20);
+        JtIResultadoCita.setFont(new java.awt.Font("NSimSun", 0, 18)); // NOI18N
         JtIResultadoCita.setRows(5);
         JtIResultadoCita.setToolTipText("");
         jScrollPane2.setViewportView(JtIResultadoCita);
@@ -1160,7 +1160,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel29Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addGap(0, 197, Short.MAX_VALUE)))
+                        .addGap(0, 144, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel29Layout.setVerticalGroup(
@@ -1237,7 +1237,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                         .addComponent(labelFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(172, Short.MAX_VALUE))
+                        .addContainerGap(352, Short.MAX_VALUE))
                     .addGroup(contenedor2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1260,9 +1260,9 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         jPanel30.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel25.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel25.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        jLabel25.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel25.setText("Seleccione la cita que quiera cancelar busqueda por folio :");
+        jLabel25.setText("Seleccione el Folio de su cita:");
 
         JcomboSeleccionar.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         JcomboSeleccionar.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 255, 255), new java.awt.Color(204, 204, 255)));
@@ -1274,9 +1274,9 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
         txtAreaCancelarC.setEditable(false);
         txtAreaCancelarC.setColumns(20);
-        txtAreaCancelarC.setFont(new java.awt.Font("Microsoft JhengHei", 1, 14)); // NOI18N
+        txtAreaCancelarC.setFont(new java.awt.Font("NSimSun", 1, 18)); // NOI18N
         txtAreaCancelarC.setRows(5);
-        txtAreaCancelarC.setText("datos de la cita seleccionada");
+        txtAreaCancelarC.setText("Datos de la cita seleccionada");
         jScrollPane6.setViewportView(txtAreaCancelarC);
 
         javax.swing.GroupLayout jPanel31Layout = new javax.swing.GroupLayout(jPanel31);
@@ -1306,7 +1306,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         });
 
         btnBuscarCita.setBackground(new java.awt.Color(255, 255, 255));
-        btnBuscarCita.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
+        btnBuscarCita.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
         btnBuscarCita.setText("BUSCAR CITA");
         btnBuscarCita.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1325,11 +1325,11 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                         .addComponent(jPanel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(14, 14, 14))
                     .addGroup(jPanel30Layout.createSequentialGroup()
-                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(JcomboSeleccionar, 0, 126, Short.MAX_VALUE)
-                        .addGap(14, 14, 14)
-                        .addComponent(btnBuscarCita, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                        .addComponent(JcomboSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBuscarCita)
                         .addGap(20, 20, 20))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel30Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1342,13 +1342,13 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                 .addGap(46, 46, 46)
                 .addGroup(jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JcomboSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JcomboSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCancelarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(232, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout p4CancelarCitaLayout = new javax.swing.GroupLayout(p4CancelarCita);
@@ -1364,13 +1364,12 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
         jTabbedPane1.addTab("tab4", p4CancelarCita);
 
-        panelPerfilDatos.setBackground(new java.awt.Color(0, 255, 204));
+        panelPerfilDatos.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel23.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Actualizar datos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Malgun Gothic Semilight", 3, 14))); // NOI18N
+        jPanel23.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Actualizar Datos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 3, 24))); // NOI18N
         jPanel23.setLayout(new javax.swing.BoxLayout(jPanel23, javax.swing.BoxLayout.PAGE_AXIS));
 
-        jLabel13.setBackground(new java.awt.Color(204, 204, 204));
-        jLabel13.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Candara", 3, 18)); // NOI18N
         jLabel13.setText("Nombre");
         jLabel13.setOpaque(true);
         jPanel23.add(jLabel13);
@@ -1385,8 +1384,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         });
         jPanel23.add(txtNombre);
 
-        jLabel14.setBackground(new java.awt.Color(204, 204, 204));
-        jLabel14.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
+        jLabel14.setFont(new java.awt.Font("Candara", 3, 18)); // NOI18N
         jLabel14.setText("Apellido paterno");
         jLabel14.setOpaque(true);
         jPanel23.add(jLabel14);
@@ -1400,8 +1398,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         });
         jPanel23.add(txtApellido);
 
-        jLabel15.setBackground(new java.awt.Color(204, 204, 204));
-        jLabel15.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Candara", 3, 18)); // NOI18N
         jLabel15.setText("Apellido Materno");
         jLabel15.setOpaque(true);
         jPanel23.add(jLabel15);
@@ -1416,8 +1413,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         });
         jPanel23.add(txtApellidoM);
 
-        jLabel16.setBackground(new java.awt.Color(204, 204, 204));
-        jLabel16.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
+        jLabel16.setFont(new java.awt.Font("Candara", 3, 18)); // NOI18N
         jLabel16.setText("Edad");
         jLabel16.setOpaque(true);
         jPanel23.add(jLabel16);
@@ -1431,9 +1427,8 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         });
         jPanel23.add(txtEdad);
 
-        jLabel17.setBackground(new java.awt.Color(204, 204, 204));
-        jLabel17.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
-        jLabel17.setText("Curp");
+        jLabel17.setFont(new java.awt.Font("Candara", 3, 18)); // NOI18N
+        jLabel17.setText("CURP");
         jLabel17.setOpaque(true);
         jPanel23.add(jLabel17);
 
@@ -1446,9 +1441,8 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         });
         jPanel23.add(txtCurp);
 
-        jLabel18.setBackground(new java.awt.Color(204, 204, 204));
-        jLabel18.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
-        jLabel18.setText("usuario");
+        jLabel18.setFont(new java.awt.Font("Candara", 3, 18)); // NOI18N
+        jLabel18.setText("Usuario");
         jLabel18.setOpaque(true);
         jPanel23.add(jLabel18);
 
@@ -1461,8 +1455,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         });
         jPanel23.add(txtUsuario);
 
-        jLabel19.setBackground(new java.awt.Color(204, 204, 204));
-        jLabel19.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Candara", 3, 18)); // NOI18N
         jLabel19.setText("Contraseña");
         jLabel19.setOpaque(true);
         jPanel23.add(jLabel19);
@@ -1478,7 +1471,9 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
             }
         });
 
-        laID.setText("-");
+        laID.setBackground(new java.awt.Color(255, 255, 255));
+        laID.setForeground(new java.awt.Color(255, 255, 255));
+        laID.setText("jLabel8");
 
         javax.swing.GroupLayout panelPerfilDatosLayout = new javax.swing.GroupLayout(panelPerfilDatos);
         panelPerfilDatos.setLayout(panelPerfilDatosLayout);
@@ -1486,14 +1481,17 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
             panelPerfilDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPerfilDatosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel23, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
+                .addComponent(jPanel23, javax.swing.GroupLayout.DEFAULT_SIZE, 765, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPerfilDatosLayout.createSequentialGroup()
-                .addGap(271, 271, 271)
-                .addComponent(laID, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(116, 116, 116)
-                .addComponent(btnActualizarDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(36, 36, 36))
+            .addGroup(panelPerfilDatosLayout.createSequentialGroup()
+                .addGap(463, 463, 463)
+                .addGroup(panelPerfilDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelPerfilDatosLayout.createSequentialGroup()
+                        .addComponent(laID)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelPerfilDatosLayout.createSequentialGroup()
+                        .addComponent(btnActualizarDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(36, 36, 36))))
         );
         panelPerfilDatosLayout.setVerticalGroup(
             panelPerfilDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1501,10 +1499,10 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
                 .addContainerGap()
                 .addComponent(jPanel23, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(panelPerfilDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnActualizarDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                    .addComponent(laID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addComponent(btnActualizarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(laID)
+                .addContainerGap(276, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout p5PerfilLayout = new javax.swing.GroupLayout(p5Perfil);
@@ -1524,30 +1522,38 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel9.setText("Desarroladores: Alejandro Paez Perez y Pablo Ramirez Antonio");
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel26.setText("Profesor: Felipe Villareal Wong ");
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/LOGOXD.png"))); // NOI18N
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/desarroladores.png"))); // NOI18N
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logo.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(227, Short.MAX_VALUE)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap()
+                .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 30, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 430, Short.MAX_VALUE))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -1558,7 +1564,7 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 792, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("tab6", jPanel3);
@@ -1641,9 +1647,8 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void btnCancelarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCitaActionPerformed
-
+//se llama al metodo de borrrar cita para que no tenga datos el botn
         BorrarCita();
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarCitaActionPerformed
 
     private void btnPanelCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPanelCancelarMouseClicked
@@ -1700,14 +1705,6 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
 
     }//GEN-LAST:event_btnPanelCancelarMouseExited
 
-    private void btnRegresarARegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarARegistrarseActionPerformed
-        this.dispose();
-        jframeRegistrarse registro = new jframeRegistrarse();
-//        new jframeRegistrarse().setVisible(true);
-
-        registro.setVisible(true);
-    }//GEN-LAST:event_btnRegresarARegistrarseActionPerformed
-
 
     private void BtnAgendarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgendarCitaActionPerformed
 
@@ -1743,13 +1740,31 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-
+//metodo para cerrar la conexion que se hizo a postgres
         conec.desconectar();
         System.exit(0);
         conec.cierraConsultas();
 
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnRegresarARegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarARegistrarseActionPerformed
+        //boton para confirma el cerrar de sesion
+        if (JOptionPane.showConfirmDialog(rootPane, "Estas seguro que quieres cerrar sesion, ¿deseas continuar?",
+                "Cerrar sesion", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+            this.dispose();
+            JfInicioSesion iniicio = new JfInicioSesion();
+
+            iniicio.setVisible(true);
+
+        } else {
+            jTabbedPane1.setSelectedIndex(0);
+            estadosSwitch("pushInformacion");
+        }
+
+
+    }//GEN-LAST:event_btnRegresarARegistrarseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1776,7 +1791,6 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
     public javax.swing.JPanel contieneTabbed;
     public javax.swing.JLabel imagenSaludTap;
     public javax.swing.JLabel jLabel1;
-    public javax.swing.JLabel jLabel10;
     public javax.swing.JLabel jLabel13;
     public javax.swing.JLabel jLabel14;
     public javax.swing.JLabel jLabel15;
@@ -1784,22 +1798,18 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
     public javax.swing.JLabel jLabel17;
     public javax.swing.JLabel jLabel18;
     public javax.swing.JLabel jLabel19;
-    public javax.swing.JLabel jLabel2;
-    public javax.swing.JLabel jLabel20;
-    public javax.swing.JLabel jLabel21;
     public javax.swing.JLabel jLabel22;
     public javax.swing.JLabel jLabel23;
     public javax.swing.JLabel jLabel24;
     public javax.swing.JLabel jLabel25;
+    public javax.swing.JLabel jLabel26;
     public javax.swing.JLabel jLabel3;
-    public javax.swing.JLabel jLabel4;
     public javax.swing.JLabel jLabel5;
     public javax.swing.JLabel jLabel6;
-    public javax.swing.JLabel jLabel7;
+    public javax.swing.JLabel jLabel8;
     public javax.swing.JLabel jLabel9;
     public javax.swing.JPanel jPanel2;
     public javax.swing.JPanel jPanel23;
-    public javax.swing.JPanel jPanel24;
     public javax.swing.JPanel jPanel25;
     public javax.swing.JPanel jPanel26;
     public javax.swing.JPanel jPanel27;
@@ -1825,7 +1835,6 @@ public class Jframeprincipal extends javax.swing.JFrame implements MouseListener
     public javax.swing.JPanel p5Perfil;
     public javax.swing.JPanel panelPerfilDatos;
     public javax.swing.JPanel panelcabecera;
-    public javax.swing.JPanel panelprueba2;
     public jtextfieldround.JTextFieldRound txtAcerca;
     public javax.swing.JTextField txtApellido;
     public javax.swing.JTextField txtApellidoM;
